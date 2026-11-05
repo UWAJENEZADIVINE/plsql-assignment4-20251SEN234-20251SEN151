@@ -1,0 +1,27 @@
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE enrollment CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE student CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE course CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+
+CREATE TABLE student (
+    student_id   NUMBER PRIMARY KEY,
+    full_name    VARCHAR2(100) NOT NULL,
+    email        VARCHAR2(100) UNIQUE NOT NULL,
+    status       VARCHAR2(20) DEFAULT 'ACTIVE'
+);
+
+CREATE TABLE course (
+    course_code  VARCHAR2(20) PRIMARY KEY,
+    course_name  VARCHAR2(100) NOT NULL,
+    credits      NUMBER(2) NOT NULL
+);
+
+CREATE TABLE enrollment (
+    enrollment_id NUMBER PRIMARY KEY,
+    student_id    NUMBER REFERENCES student(student_id),
+    course_code   VARCHAR2(20) REFERENCES course(course_code),
+    grade         NUMBER(4,2),
+    semester      VARCHAR2(20)
+);
